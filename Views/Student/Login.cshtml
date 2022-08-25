@@ -4,39 +4,91 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<h1 style="text-align:center;">Login As A Student</h1>
 
-<h4>Student</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
+
+<div class="row justify-content-center">
+<div class="split left">
+        <form>
+          <img src="~/images/2.jpg" alt="WhiteBlue" style="width: 80%"  class="center">
+        </form></div>
+         <div class="split right">
+             @if (ViewBag.ErrorMessage!=null)
+{
+    <div class="text-danger">@ViewBag.ErrorMessage</div>
+}
+             <div class="col-md-8">
+            <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <br />
+            <br/>
+            <div class="form-group text-white">
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
+           <br />
+         @*     <div class="form-group" hidden>
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="FatherName" class="control-label"></label>
+                <input asp-for="FatherName" class="form-control" />
+                <span asp-validation-for="FatherName" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="BranchName" class="control-label"></label>
+                <input asp-for="BranchName" class="form-control" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="GraduationYear" class="control-label"></label>
+                <input asp-for="GraduationYear" class="form-control" />
+                <span asp-validation-for="GraduationYear" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Class10thMarks" class="control-label"></label>
+                <input asp-for="Class10thMarks" class="form-control" />
+                <span asp-validation-for="Class10thMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Class12thMarks" class="control-label"></label>
+                <input asp-for="Class12thMarks" class="form-control" />
+                <span asp-validation-for="Class12thMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CurrentCgpa" class="control-label"></label>
+                <input asp-for="CurrentCgpa" class="form-control" />
+                <span asp-validation-for="CurrentCgpa" class="text-danger"></span>
+            </div>
+         *@ 
+            
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group text-white" hidden>
                 <label asp-for="CPassword" class="control-label"></label>
                 <input asp-for="CPassword" class="form-control" />
                 <span asp-validation-for="CPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+            <br />
+            <div>
+                <input type="submit" value="Login" class="button" />
             </div>
         </form>
     </div>
-</div>
+    </div>
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    @Html.ActionLink("Are you a new student? Click here to Register", "Create")
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

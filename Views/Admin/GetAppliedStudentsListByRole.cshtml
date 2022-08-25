@@ -1,0 +1,42 @@
+﻿@model IEnumerable<PlacementApplicationNew.Model.Apply>
+
+@{
+    ViewData["Title"] = "GetAppliedStudentsListByRole";
+    Layout = "AdminLayout";
+}
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+<h1 class="text-white">Applied Student's List By Role</h1>
+
+    <table class="table table-bordered table-hover table-striped" style="background-color:white">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleId)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleId)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>
+</body>

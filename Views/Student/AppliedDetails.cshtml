@@ -2,14 +2,13 @@
 
 @{
     ViewData["Title"] = "AppliedDetails";
+    Layout = "StudentLayout";
 }
+<body class="bg-image" style="background-image: url('https://img.freepik.com/free-vector/geometric-science-education-background-vector-gradient-blue-digital-remix_53876-125993.jpg?size=626&ext=jpg&ga=GA1.2.2108062385.1661356707'); height: 100%; background-repeat:no-repeat; background-size:cover,contain;">
 
-<h1>AppliedDetails</h1>
+<h1 class="text-white">Applied Details</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <table class="table table-bordered table-hover table-striped" style="background-color:white">
     <thead>
         <tr>
             <th>
@@ -20,6 +19,14 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RoleId)
+            </th>
+            <th>
+               @* @Html.DisplayNameFor(model => model.Role.RoleName)*@
+                <label>Role Name</label>
+            
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role.Company.CompanyName)
             </th>
             <th></th>
         </tr>
@@ -36,12 +43,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.RoleId)
             </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Role.RoleName)
+            </td>
+           <td>
+                @Html.DisplayFor(modelItem => item.Role.Company.CompanyName)
+            </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+               @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@                 
+                @Html.ActionLink("Delete", "DeleteAppliedDetails", new {  id=item.Id  })
             </td>
         </tr>
 }
     </tbody>
+    
 </table>
+@Html.ActionLink("Back", "Role")
+</body>

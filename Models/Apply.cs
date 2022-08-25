@@ -9,12 +9,10 @@ namespace PlacementApplicationNew.Model
         public int Id { get; set; }
         [Display(Name = "Student Id")]
         public int? StudentId { get; set; }
-
         [ForeignKey("StudentId")]
         public virtual Student? Student { get; set; }
         [Display(Name = "Role Id")]
         public int? RoleId { get; set; }
-
         [ForeignKey("RoleId")]
         public virtual Role? Role { get; set; }
 

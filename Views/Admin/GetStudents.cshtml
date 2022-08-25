@@ -2,14 +2,19 @@
 
 @{
     ViewData["Title"] = "GetStudents";
+    Layout = "AdminLayout";
 }
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
 
-<h1>GetStudents</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<h1 class="text-white">Students</h1>
+@*<div
+  class="bg-image"
+  style="
+    background-image: url('https://tse3.mm.bing.net/th?id=OIP.BbUWqBUe4b_C0cNdcvcWewHaEK&pid=Api&P=0');
+    height: 100vh;
+  "
+></div>*@
+<table class="table table-bordered table-hover table-striped" style="background-color:white">
     <thead>
         <tr>
             <th>
@@ -30,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.GraduationYear)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Class10thMarks)
             </th>
             <th>
@@ -38,13 +43,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CurrentCgpa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CPassword)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -69,7 +68,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.GraduationYear)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Class10thMarks)
             </td>
             <td>
@@ -77,14 +76,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CurrentCgpa)
-            </td>
+            </td>*@
             
             <td>
                
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.UserId  })
+                @Html.ActionLink("Details", "Details", new {  id=item.UserId }) |
+                @Html.ActionLink("Delete", "DeleteStudent", new {  id=item.UserId  })
             </td>
         </tr>
 }
     </tbody>
 </table>
+</body>

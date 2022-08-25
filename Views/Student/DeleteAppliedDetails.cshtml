@@ -1,0 +1,41 @@
+﻿@model PlacementApplicationNew.Model.Apply
+
+@{
+    ViewData["Title"] = "DeleteAppliedDetails";
+     Layout = "StudentLayout";
+}
+<body class="bg-image" style="background-image: url('https://img.freepik.com/free-vector/geometric-science-education-background-vector-gradient-blue-digital-remix_53876-125993.jpg?size=626&ext=jpg&ga=GA1.2.2108062385.1661356707'); height: 100%; background-repeat:no-repeat; background-size:cover,contain;">
+
+<h1 class="text-white">Delete Applied Details</h1>
+
+    <h3 class="text-white">Are you sure you want to delete this?</h3>
+<div>
+    
+    <hr />
+    <dl class="row text-white">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RoleId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RoleId)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteAppliedDetails">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="AppliedDetails" class="text-white">Back to List</a>
+    </form>
+</div>
+</body>

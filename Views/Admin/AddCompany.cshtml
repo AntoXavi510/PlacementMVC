@@ -1,17 +1,26 @@
 ﻿@model PlacementApplicationNew.Model.Company
-
 @{
     ViewData["Title"] = "AddCompany";
+    Layout = "AdminLayout";
+}
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+    <h1 class="text-white">Add New Company</h1>
+@if (ViewBag.Success!=null)
+{
+    <div class="text-success">@ViewBag.Success</div>
+}
+@if (ViewBag.Message!=null)
+{
+    <div class="text-danger">@ViewBag.Message</div>
 }
 
-<h1>AddCompany</h1>
-
-<h4>Company</h4>
 <hr />
-<div class="row">
+    <div class="row justify-content-center text-white">
     <div class="col-md-4">
-        <form asp-action="AddCompany">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewBag.Message == null && ViewBag.Success == null)
+            {
+                <form asp-action="AddCompany">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
          @*   <div class="form-group">
                 <label asp-for="CompanyId" class="control-label"></label>
                 <input asp-for="CompanyId" class="form-control" />
@@ -22,17 +31,19 @@
                 <input asp-for="CompanyName" class="form-control" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <br />
+                <div class="justify-content-center" style="text-align:center;">
+                <input type="submit" value="Add" class="btn btn-primary" />
             </div>
-        </form>
+        </form>}
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+        <a class="text-white" asp-action="GetCompanies" style="text-align:center;">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+</body>

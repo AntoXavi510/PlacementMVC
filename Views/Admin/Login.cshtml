@@ -1,0 +1,49 @@
+﻿@model PlacementApplicationNew.Model.Admin
+@{
+    ViewData["Title"] = "Login";
+}
+<h1 style="text-align:center;">Login As Admin</h1>
+<hr />
+<div class="row justify-content-center">
+    <div class="split left">
+        <form>
+          <img src="~/images/1.jpg" alt="WhiteBlue" style="width: 80%"  class="center">
+        </form></div>
+         <div class="split right">
+             <div class="col-md-8">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-white"></div>
+            <br />
+            <br/>
+          @*  <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group text-white">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+           @* </div>
+            <div class="form-group text-white">
+           *@<br />    
+           <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <br/>
+            <div class="justify-content-center">
+                <input type="submit" value="Login" class="button " />
+            </div>
+            <div>
+
+            </div>
+        </form>
+    </div>
+</div>
+ </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

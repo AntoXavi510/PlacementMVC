@@ -1,16 +1,13 @@
 ﻿@model IEnumerable<PlacementApplicationNew.Model.Company>
-
 @{
     ViewData["Title"] = "GetCompanies";
+    Layout = "AdminLayout";
 }
 
-<h1>GetCompanies</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+    <h1 class="text-white">Companies</h1>
+    <table class=" table table-bordered table-hover table-striped" style="background-color:white">
+        <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.CompanyId)
@@ -31,11 +28,10 @@
                 @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "DeleteCompany", new {  id=item.CompanyId  })
             </td>
         </tr>
 }
     </tbody>
 </table>
+</body>

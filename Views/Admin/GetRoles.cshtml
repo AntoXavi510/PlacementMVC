@@ -1,21 +1,17 @@
 ﻿@model IEnumerable<PlacementApplicationNew.Model.Role>
-
 @{
     ViewData["Title"] = "GetRoles";
+    Layout = "AdminLayout";
 }
-
-<h1>GetRoles</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+<h1 class="text-white">Roles</h1>
+    <table class=" table table-bordered table-hover table-striped" style="background-color:white">
     <thead>
         <tr>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.RoleId)
             </th>
-            <th>
+           *@ <th>
                 @Html.DisplayNameFor(model => model.RoleName)
             </th>
             <th>
@@ -39,9 +35,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.RoleId)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
@@ -61,11 +57,12 @@
                 @Html.DisplayFor(modelItem => item.Company.CompanyName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditRole", new {  id=item.RoleId  }) |
+                @Html.ActionLink("Applied Students", "GetAppliedStudentsListByRole", new {  id=item.RoleId}) |
+                @Html.ActionLink("Delete", "DeleteRole", new {  id=item.RoleId  })
             </td>
         </tr>
 }
     </tbody>
 </table>
+</body>

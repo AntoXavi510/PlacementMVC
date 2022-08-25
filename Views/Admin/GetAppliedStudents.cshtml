@@ -2,11 +2,12 @@
 
 @{
     ViewData["Title"] = "GetAppliedStudents";
+    Layout = "AdminLayout";
 }
-
-<h1>Get Applied Students</h1>
-<table class="table">
-    <thead>
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+    <h1 class="text-white">Applied Students</h1>
+    <table class=" table table-bordered table-hover table-striped" style="background-color:white">
+        <thead>
         <tr>           
             <th>
                 @Html.DisplayNameFor(model => model.StudentId)
@@ -15,10 +16,16 @@
                 @Html.DisplayNameFor(model => model.Student.FirstName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Student.CurrentCgpa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student.BranchName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Role.RoleName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoleId)
+                @Html.DisplayNameFor(model => model.Role.Company.CompanyName)
             </th>           
         </tr>
     </thead>
@@ -31,13 +38,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Student.FirstName)
             </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Student.CurrentCgpa)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Student.BranchName)
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Role.RoleName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RoleId)
+                @Html.DisplayFor(modelItem => item.Role.Company.CompanyName)
             </td>           
         </tr>
 }
     </tbody>
 </table>
+</body>

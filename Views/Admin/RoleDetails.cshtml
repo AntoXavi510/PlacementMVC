@@ -2,15 +2,15 @@
 
 @{
     ViewData["Title"] = "RoleDetails";
-    Layout = "StudentLayout";
+    Layout = "AdminLayout";
 }
-<body class="bg-image" style="background-image: url('https://img.freepik.com/free-vector/geometric-science-education-background-vector-gradient-blue-digital-remix_53876-125993.jpg?size=626&ext=jpg&ga=GA1.2.2108062385.1661356707'); height: 100%; background-repeat:no-repeat; background-size:cover,contain;">
-
-<h1 class="text-white">Role Details</h1>
+<body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
+<h1>Role Details</h1>
 
 <div>
+    <h4>Role</h4>
     <hr />
-    <dl class="row text-white">
+    <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.RoleId)
         </dt>
@@ -55,9 +55,8 @@
         </dd>
     </dl>
 </div>
-    <div>
-
-        <a asp-action="Apply">Apply</a>
-    </div>
-<a asp-action="Role">Back to List</a>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
 </body>

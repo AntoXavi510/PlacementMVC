@@ -7,26 +7,7 @@ namespace PlacementMVC.Controllers
 {
     public class StudentController : Controller
     {
-        string BaseUrl = "https://localhost:44362/";
-        public async Task<ActionResult> GetStudents()
-        {
-            List<Student> StudentsInfo = new List<Student>();
-            using (var client = new HttpClient())
-            {
-                // client.BaseAddress = new Uri(Baseurl);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("https://localhost:44362/api/Students");
-                if (Res.IsSuccessStatusCode)
-                {
-                    var ProdResponse = Res.Content.ReadAsStringAsync().Result;
-                    StudentsInfo = JsonConvert.DeserializeObject<List<Student>>(ProdResponse);
-
-                }
-                return View(StudentsInfo);
-            }
-
-        }
+        string BaseUrl = "https://localhost:44362/"; 
         public async Task<ActionResult> Login()
         {
             return await Task.Run(() => View());
@@ -34,40 +15,76 @@ namespace PlacementMVC.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Student student)
         {
-            HttpContext.Session.SetInt32("StudentId",student.UserId);
+            Student s1 = new Student();
+            student.CPassword = student.Password;
+            HttpContext.Session.SetInt32("StudentId", student.UserId);
+            
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(BaseUrl);
                 StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
-                using (var response = await client.PostAsync("api/Students/Login", content))
+                var response = await client.PostAsync("https://localhost:44362/api/Students/Login", content);
+                if (response.IsSuccessStatusCode)
                 {
                     string apires = await response.Content.ReadAsStringAsync();
-                    student = JsonConvert.DeserializeObject<Student>(apires);
+                    s1 = JsonConvert.DeserializeObject<Student>(apires);
+                    HttpContext.Session.SetString("FirstName", s1.FirstName);
+                    return RedirectToAction("Role");
                 }
-                return RedirectToAction("Role");
-            }
-        }
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-            Student student = new Student();
-            using (var client = new HttpClient())
-            {
-                using (var Res = await client.GetAsync("https://localhost:44362/api/Students/" + id))
+                else
                 {
-                    string apires = await Res.Content.ReadAsStringAsync();
-                    student = JsonConvert.DeserializeObject<Student>(apires);
-                }
+                    ViewBag.ErrorMessage="Invalid Credentials";
+                    return View();
+                }               
             }
-            return View(student);
+
         }
+
+
+        [NoDirectAccess]
         [HttpGet]
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Details(int? id)
         {
+            id = (int)HttpContext.Session.GetInt32("StudentId");
             Student student = new Student();
+            if (id != null)
+            {
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        using (var Res = await client.GetAsync("https://localhost:44362/api/Students/" + id))
+                        {
+                            string apires = await Res.Content.ReadAsStringAsync();
+                            student = JsonConvert.DeserializeObject<Student>(apires);
+                            
+                        }
+                    }
+                    return View(student);
+                }
+
+                catch (Exception sqlEx) { ViewBag.ErrorMsg = sqlEx.Message; }
+            }
+
+
+             return RedirectToAction("login", "Student");
+                
+            
+            
+        }
+       
+
+
+        [NoDirectAccess]
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {   id = (int)HttpContext.Session.GetInt32("StudentId");
+            Student student = new Student();
+            student.CPassword = student.Password;
             using (var client = new HttpClient())
             {
-                using (var res = await client.GetAsync("https://localhost:44362/api/Students/" + Id))
+                using (var res = await client.GetAsync("https://localhost:44362/api/Students/" + id))
                 {
                     string apires = await res.Content.ReadAsStringAsync();
                     student = JsonConvert.DeserializeObject<Student>(apires);
@@ -78,7 +95,6 @@ namespace PlacementMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Student student)
         {
-
             using (var client = new HttpClient())
             {
                 int id = student.UserId;
@@ -89,28 +105,63 @@ namespace PlacementMVC.Controllers
                     student = JsonConvert.DeserializeObject<Student>(apiRes);
                 }
             }
-            return RedirectToAction("GetStudents");
+            return RedirectToAction("Role");
         }
+        [NoDirectAccess]
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteAppliedDetails(int Id)
+        {
+            Apply apply = new Apply();
+            using (var client = new HttpClient())
+            {
+                using (var res = await client.GetAsync("https://localhost:44362/api/Applies/" + Id))
+                {
+                    string apires = await res.Content.ReadAsStringAsync();
+                    apply = JsonConvert.DeserializeObject<Apply>(apires);
+                }
+            }
+            return View(apply);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteAppliedDetails(int Id, Apply apply)
+        {
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                await client.DeleteAsync("https://localhost:44362/api/Applies/" + Id);
+            }
+            return RedirectToAction("AppliedDetails");
+        }
+        [NoDirectAccess]
+
         public async Task<ActionResult> Create()
         {
             return await Task.Run(() => View());
         }
         [HttpPost]
         public async Task<ActionResult> Create(Student student)
-        {
-            Student students = new Student();
+        { 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(BaseUrl);
                 StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
-                using (var response = await client.PostAsync("api/Students", content))
+                var response = await client.PostAsync("https://localhost:44362/api/Students", content);
+                if (response.IsSuccessStatusCode)
                 {
-                    string apires = await response.Content.ReadAsStringAsync();
-                    student = JsonConvert.DeserializeObject<Student>(apires);
+                    ViewBag.Msg = "User Successfully Registered";
+                    return View();
                 }
-                return RedirectToAction("GetStudents");
+                else
+                {
+                    ViewBag.Message = "User Id Already Found";
+                    return View();
+                }
             }
         }
+        [NoDirectAccess]
+
         public async Task<ActionResult> Apply()
         {
             return await Task.Run(() => View());
@@ -118,7 +169,7 @@ namespace PlacementMVC.Controllers
         [HttpPost]
         public async Task<ActionResult> Apply(Apply apply)
         {
-            
+            Apply applydetails=new Apply();
             using (var client = new HttpClient())
             {
                 var id= HttpContext.Session.GetInt32("RoleId");
@@ -130,17 +181,30 @@ namespace PlacementMVC.Controllers
 
                 client.BaseAddress = new Uri(BaseUrl);
                 StringContent content = new StringContent(JsonConvert.SerializeObject(apply), Encoding.UTF8, "application/json");
-                
-                using (var response = await client.PostAsync("api/Applies", content))
+
+                var response = await client.PostAsync("api/Applies", content);
+                if (response.IsSuccessStatusCode)
                 {
                     string apires = await response.Content.ReadAsStringAsync();
-                    apply = JsonConvert.DeserializeObject<Apply>(apires);
+                    applydetails = JsonConvert.DeserializeObject<Apply>(apires);
+
+                    ViewBag.Success = "You have successfully applied for the role with Role Id:"+@ViewBag.RoleId;
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = "The user is already registered or insufficient CGPA";
+                    return View();
                 }
                 return RedirectToAction("Role");
             }
         }
+        [NoDirectAccess]
+
         public async Task<ActionResult> Role()
         {
+            ViewBag.StudentId=HttpContext.Session.GetInt32("StudentId");
+            ViewBag.StudentName = HttpContext.Session.GetString("FirstName");
             List<Role> RoleInfo = new List<Role>();
             using (var client = new HttpClient())
             {
@@ -157,6 +221,8 @@ namespace PlacementMVC.Controllers
                 return View(RoleInfo);
             }
         }
+        [NoDirectAccess]
+
         [HttpGet]
         public async Task<IActionResult> AppliedDetails()
         {
@@ -179,6 +245,8 @@ namespace PlacementMVC.Controllers
                 return View(apply);
             }
         }
+        [NoDirectAccess]
+
         [HttpGet]
         public async Task<IActionResult> RoleDetails(int id)
         {
@@ -193,6 +261,7 @@ namespace PlacementMVC.Controllers
                 }
             }
             return View(role);
+
         }
         public IActionResult Logout()
         { HttpContext.Session.Clear(); return RedirectToAction("Login", "Student"); }
