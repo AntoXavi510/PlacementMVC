@@ -4,6 +4,9 @@
     ViewData["Title"] = "AddRole";
    Layout = "AdminLayout";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <body class="bg-image" style="background-image: url('https://stijc.com/wp-content/uploads/2019/02/Technical-Background.jpg'); height: 100vh; ">
 <h1 class="text-white">Add New Role</h1>
     @if (ViewBag.Success != null)
@@ -59,8 +62,17 @@
                     </div>
                 </form>}
             </div>
-        </div>
-    
+        </div>    
+    @if (ViewBag.Success != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                
+                    toastr.success('@ViewBag.Success');
+                
+            });
+        </script>
+    }
     <div>
     <a asp-action="GetRoles">Back to List</a>
 </div>

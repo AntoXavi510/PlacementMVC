@@ -51,6 +51,17 @@
     </div>
 </div>
 
+    @if (ViewBag.Success != null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                if ('ViewBag.Success' != null) {
+                    toastr.success('@ViewBag.Success');
+                }
+                else { toastr.warning('Already added'); }
+            });
+        </script>
+    }
 <div>
     <a asp-action="Role">Back to List</a>
 </div>
