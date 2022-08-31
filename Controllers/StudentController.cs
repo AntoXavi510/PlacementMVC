@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NuGet.Common;
 using PlacementApplicationNew.Model;
+using PlacementApplicationNew.Token;
 using System.Net.Http.Headers;
 using System.Text;
 namespace PlacementMVC.Controllers
@@ -12,40 +15,100 @@ namespace PlacementMVC.Controllers
         {
             return await Task.Run(() => View());
         }
+        //[HttpPost]
+        //public async Task<ActionResult> Login(Student student)
+        //{
+        //    Student s1 = new Student();
+        //    student.CPassword = student.Password;
+        //    HttpContext.Session.SetInt32("StudentId", student.UserId);
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(BaseUrl);
+        //        StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
+        //        var response = await client.PostAsync("https://localhost:44362/api/Students/Login", content);
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            string apires = await response.Content.ReadAsStringAsync();
+        //            s1 = JsonConvert.DeserializeObject<Student>(apires);
+        //            HttpContext.Session.SetString("FirstName", s1.FirstName);
+        //            return RedirectToAction("Role");
+        //        }
+        //        else
+        //        {
+        //            ViewBag.ErrorMessage="Invalid Credentials";
+        //            return View();
+        //        }               
+        //    }
+
+        //}
         [HttpPost]
-        public async Task<ActionResult> Login(Student student)
+        public async Task<IActionResult> Login(Student? student)
         {
-            Student s1 = new Student();
-            student.CPassword = student.Password;
-            HttpContext.Session.SetInt32("StudentId", student.UserId);
-            
-            using (var client = new HttpClient())
+            StudentToken? mt = new StudentToken();
+
+            using (HttpClient httpClient = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseUrl);
+
+
+
+                student.CPassword = student.Password;
+                httpClient.BaseAddress = new Uri(BaseUrl);
                 StringContent content = new StringContent(JsonConvert.SerializeObject(student), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:44362/api/Students/Login", content);
+                var response = await httpClient.PostAsync("https://localhost:44362/api/Students/Login", content);
+
                 if (response.IsSuccessStatusCode)
                 {
-                    string apires = await response.Content.ReadAsStringAsync();
-                    s1 = JsonConvert.DeserializeObject<Student>(apires);
-                    HttpContext.Session.SetString("FirstName", s1.FirstName);
+                    var StudentResponse = response.Content.ReadAsStringAsync().Result;
+                    mt = JsonConvert.DeserializeObject<StudentToken>(StudentResponse);
+                    if (mt == null)
+                    {
+                        ViewBag.ErrorMessage = "Invalid Credentials";
+                        return View();
+                    }
+                    TempData["StudentId"] = mt.student.UserId;
+                    HttpContext.Session.SetInt32("StudentId", mt.student.UserId);
+                    HttpContext.Session.SetString("FirstName", mt.student.FirstName);
+
+
+
+
+                    string token = mt.studentToken;
+                    HttpContext.Session.SetString("token", token);
+
+
+
                     return RedirectToAction("Role");
                 }
                 else
                 {
-                    ViewBag.ErrorMessage="Invalid Credentials";
+                    ViewBag.ErrorMessage = "Invalid Credentials";
                     return View();
-                }               
+                }
+
+
+
+
+
+
+
+
             }
 
-        }
 
 
-        [NoDirectAccess]
+        
+
+
+
+
+    }
+
+    [NoDirectAccess]
         [HttpGet]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            id = (int)HttpContext.Session.GetInt32("StudentId");
+           id = (int)HttpContext.Session.GetInt32("StudentId");
             Student student = new Student();
             if (id != null)
             {
@@ -95,6 +158,7 @@ namespace PlacementMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Student student)
         {
+            TempData["Message"] = "Updated Successfully";
             using (var client = new HttpClient())
             {
                 int id = student.UserId;
@@ -126,12 +190,13 @@ namespace PlacementMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteAppliedDetails(int Id, Apply apply)
         {
-
+            TempData["Delete"] = "Deleted Successfully";
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(BaseUrl);
                 await client.DeleteAsync("https://localhost:44362/api/Applies/" + Id);
             }
+
             return RedirectToAction("AppliedDetails");
         }
         [NoDirectAccess]
@@ -178,8 +243,10 @@ namespace PlacementMVC.Controllers
                 var StudentId = HttpContext.Session.GetInt32("StudentId");
                 ViewBag.StudentId = StudentId;
                 apply.StudentId = @ViewBag.StudentId;
-
+                string? token = HttpContext.Session.GetString("token");
                 client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(apply), Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync("api/Applies", content);
