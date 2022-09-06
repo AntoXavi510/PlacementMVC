@@ -19,6 +19,8 @@
     <div class="text-white">@ViewBag.Message</div>
 }
 <hr />
+    @if (ViewBag.Message == null && ViewBag.Msg == null)
+    {
 <div class="row text-white justify-content-center">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -97,7 +99,7 @@
     {
         <script type="text/javascript">
             $(document).ready(function () {
-                toastr.success('@ViewBag.Message');
+                toastr.warning('@ViewBag.Message');
             });
         </script>
     }
