@@ -85,22 +85,7 @@ namespace PlacementMVC.Controllers
                     ViewBag.ErrorMessage = "Invalid Credentials";
                     return View();
                 }
-
-
-
-
-
-
-
-
             }
-
-
-
-        
-
-
-
 
     }
 
@@ -200,7 +185,6 @@ namespace PlacementMVC.Controllers
             return RedirectToAction("AppliedDetails");
         }
         [NoDirectAccess]
-
         public async Task<ActionResult> Create()
         {
             return await Task.Run(() => View());
@@ -226,7 +210,6 @@ namespace PlacementMVC.Controllers
             }
         }
         [NoDirectAccess]
-
         public async Task<ActionResult> Apply()
         {
             return await Task.Run(() => View());
